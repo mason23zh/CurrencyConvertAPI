@@ -1,6 +1,7 @@
 package Test;
 
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,17 +19,22 @@ public class getJSONtest {
 
     public static void getJSON() {
         try {
-            String baseURL = "http://api.fixer.io/latest";
-            URL url = new URL("http://api.fixer.io/latest");
+            String baseURL = "http://api.fixer.io/latest?base=USD";
+            URL url = new URL(baseURL);
             InputStream is = url.openStream();
 
-            JSONObject obj = new JSONObject("F:\\Java_Project_NEW\\CurrencyConvertAPI\\testJSON.json");
+            JSONTokener tokener = new JSONTokener(is);
+            JSONObject root = new JSONObject(tokener);
 
-            String cRates = obj.getJSONObject("base").toString();
-            System.out.println(cRates);
+            String date = root.getString("date");
+            System.out.println("date:" + date);
 
-            
+            String base = root.getString("base");
+            System.out.println("base:" + base);
 
+            JSONObject rateObj = root.getJSONObject("rates");
+            double CNY = rateObj.getDouble("CNY");
+            System.out.println("CNY rate:" + CNY);
 
 
         } catch (MalformedURLException e) {
