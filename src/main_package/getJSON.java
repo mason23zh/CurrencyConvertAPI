@@ -1,17 +1,18 @@
-package main_package;
 
+/**
+ * Created by Zhengyang's PC on 2016/3/23.
+ */
+
+package main_package;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-/**
- * Created by Zhengyag's PC on 2016/3/23.
- */
-public class getJSON{
+
+public class GetJSON {
 
     private String base;
     private String convertTo;
@@ -20,27 +21,26 @@ public class getJSON{
     private double baseRate;
     private double convertRate;
 
-    public getJSON(String base) {
-        this.base = base;
-    }
+    public GetJSON() {}
 
-    public getJSON(String base, String convertTo) {
+    public GetJSON(String base, String convertTo) {
         this.base = base;
         this.convertTo = convertTo;
 
+        //Construct the final url with baseURL + parameter
         String finlaURL = baseURL + "?base="+base;
 
         try {
+            //open stream with final url
             URL url = new URL(finlaURL);
             InputStream is = url.openStream();
 
             JSONTokener tokener = new JSONTokener(is);
+            //Get root object
             JSONObject root = new JSONObject(tokener);
-
+            //Get data
             date = root.getString("date");
-
-
-
+            //Get rates object
             JSONObject rateObj = root.getJSONObject("rates");
             convertRate = rateObj.getDouble(convertTo);
 
